@@ -26,6 +26,9 @@ jobs:
       - name: Install Cypress Globally
         run: npm install -g cypress
 
+      - name: Grant Execute Permissions for `concurrently`
+        run: chmod +x ./node_modules/.bin/concurrently
+
       - name: Build App
         run: npm run build
 
