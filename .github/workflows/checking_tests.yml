@@ -1,9 +1,8 @@
 name: Checking Tests
-#Test
+#Test 3
 on:
   pull_request:
     branches:
-      - main
       - develop
 
 jobs:
@@ -22,12 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install 
-
-      - name: Install Cypress Globally
-        run: npm install -g cypress
-
-      - name: Grant Execute Permissions for `concurrently`
-        run: chmod +x ./node_modules/.bin/concurrently
 
       - name: Build App
         run: npm run build
