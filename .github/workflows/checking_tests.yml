@@ -10,6 +10,14 @@ jobs:
     name: Checking tests
     runs-on: ubuntu-latest
 
+    services: 
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'" --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -29,9 +37,13 @@ jobs:
         run: npm run build
 
       - name: Seed Database
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: npm run seed
 
-      - name: Run Cypress Component Tests
-        run: npx cypress run --component
+      - name: Start Server
+        run: npm start &
+
+      - name: Wait for Server to Start
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Component Tests
+        run: npm run test-component
