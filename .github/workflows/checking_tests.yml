@@ -29,6 +29,8 @@ jobs:
         run: npm run build
 
       - name: Seed Database
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: npm run seed
 
       - name: Run Cypress Component Tests
