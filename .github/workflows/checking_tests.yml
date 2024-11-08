@@ -26,7 +26,10 @@ jobs:
       - name: Build App
         run: npm run build
 
+
       - name: Seed Database
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: npm run seed
 
       - name: Start Server
