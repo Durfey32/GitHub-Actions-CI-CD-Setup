@@ -1,9 +1,8 @@
 name: Checking Tests
-#Test
+#Test 3
 on:
   pull_request:
     branches:
-      - main
       - develop
 
 jobs:
@@ -18,22 +17,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
+          node-version: "21.x"
 
       - name: Install dependencies
-        run: npm install 
-
-      - name: Install Cypress Globally
-        run: npm install -g cypress
-
-      - name: Grant Execute Permissions for `concurrently`
-        run: chmod +x ./node_modules/.bin/concurrently
+        # run: npm install 
+        run: npm ci --unsafe-perm
 
       - name: Build App
         run: npm run build
 
+
       - name: Seed Database
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: npm run seed
 
-      - name: Run Cypress Component Tests
-        run: npx cypress run --component
+      # - name: Start Server
+      #   env:
+      #     MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      #   run: npm start
+
+      # - name: Wait for Server to Start
+      #   run: npx wait-on http://localhost:3000
+
+      - name: Run Component Tests
+        run: npm run test-component
