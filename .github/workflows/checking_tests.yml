@@ -37,8 +37,8 @@ jobs:
       - name: Build App
         run: npm run build
 
-      - name: Seed Database
-        run: npm run seed
+      # - name: Seed Database
+      #   run: npm run seed
 
       - name: Start Server
         run: npm start
