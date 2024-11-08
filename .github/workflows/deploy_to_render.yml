@@ -11,24 +11,17 @@ jobs:
   ci:
     name: Deploy To Render
     runs-on: ubuntu-latest
-    services: 
-      mongodb:
-        image: mongo:6.0
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'" 
-          --health-interval=10s 
-          --health-timeout=5s 
-          --health-retries=5
-
     steps:
-      - name: Checkout Code
       - uses: actions/checkout@v4
+      - name: Test
+        run: |
+          npm install
+          npm run test
 
-         - name: Deploy to Render
+      - name: Deploy
+        # Only run this step if the branch is main
         if: github.ref == 'refs/heads/main'
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          curl -X POST "$deploy_url"
+          curl "$deploy_url"
